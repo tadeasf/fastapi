@@ -1,0 +1,77 @@
+# @format
+
+service: serverless-fastapi
+frameworkVersion: "3"
+# if I need to reset environment, remove myenv + python3 -m venv myenv
+provider:
+  name: aws
+  runtime: python3.9
+  stage: dev
+  region: us-east-1
+  profile: daytrip-test
+  timeout: 30 # default is 6
+  memorySize: 1024 # default is 1024
+  # environment:
+  #   GOOGLE_APPLICATION_CREDENTIALS: ./bi-data-283513-e3eb390d2df6.json
+  #   GOOGLE_CLOUD_PROJECT: bi-data-283513
+  # iamRoleStatements:
+  #   - Effect: Allow
+  #     Action:
+  #       - s3:*
+  #     Resource:
+  #       - arn:aws:s3:::daytrip-bigquery-export-download-frontend/*
+  #       - arn:aws:s3:*:*:accesspoint/*
+  #       - arn:aws:s3:*:*:job/*
+  #       - arn:aws:s3:::daytrip-bigquery-export-download-frontend
+  #   - Effect: Allow
+  #     Action:
+  #       - dynamodb:*
+  #     Resource: arn:aws:dynamodb:us-east-1:915176416424:table/etl-variables
+package:
+  exclude:
+    - .trunk/**
+    - .git/**
+    - .gitignore
+    - .gitmodules
+    - __pycache__/**
+    - tests/**
+    - .pytest_cache/**
+    - .venv/**
+    - node_modules/**
+
+plugins:
+  - serverless-python-requirements
+  - serverless-plugin-optimize
+  - serverless-dotenv-plugin
+  - serverless-offline
+  - serverless-prune-plugin
+#  - serverless-aws-lambda
+#  - serverless-pydeps
+#  - serverless-plugin-layer-manager
+#  - serverless-offline-python
+custom:
+  prune:
+    automatic: true
+    number: 2
+  optimize:
+    minify: true
+    uglify: true
+  serverless-offline:
+    noTimeout: true
+    #webSocketHardTimeout: 210 # default is 30
+    #webSocketIdleTimeout: 210 # default is 60
+  pythonRequirements:
+    zip: true
+    slim: true
+    usePoetry: true
+    poetryPath: /Users/tadeasfort/Documents/pythonJSprojects/gitHub/fastapi-sls/pyproject.toml
+functions:
+  api:
+    handler: app.handler
+    events:
+      - http:
+          path: v1/api
+          method: GET
+      - http:
+          path: v1/api/hello/{name}
+          method: GET

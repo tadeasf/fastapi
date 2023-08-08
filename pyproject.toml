@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "fastapi-sls"
+version = "0.1.0"
+description = ""
+authors = ["tadeasf <taddy.fort@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "3.9.17"
+fastapi = "^0.101.0"
+uvicorn = "^0.23.2"
+mangum = "^0.17.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

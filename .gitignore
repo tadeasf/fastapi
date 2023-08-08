@@ -1,0 +1,9 @@
+node_modules/*
+.venv
+.serverless
+package-lock.json
+poetry.lock
+.DS_Store
+.requirements.zip
+node_modules
+__pycache__
